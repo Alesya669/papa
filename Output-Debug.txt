@@ -1,68 +1,84 @@
 ﻿
-
 #include <iostream>
-#include <omp.h>
-using namespace std;
 #include <chrono>
+#include <vector>
+#include <random>
+#include <algorithm>
 using namespace chrono;
+using namespace std;
+
+void Bubl1(int Mass[], int n)
+{
+	int i, j;
+	for (int i = 0; i < n; i++) {
+		if (i % 2 == 0) {
+			for (int j = 0; j < n - 1; j += 2)
+			{
+				if (Mass[j] > Mass[i + 1])swap(Mass[j], Mass[i + 1]);
+			}
+		}
+		else {
+			for (int j = 1; j < n - 1; j += 2)
+			{
+				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
+			}
+
+		}
+	}
+}
+
+void Bubl2(int Mass[], int n) {
+	int i, j;
+#pragma omp parallel default(none) shared(Mass,n) private(i)
+
+	for (int i = 0; i < n; i++) {
+		if (i % 2 == 0) {
+#pragma omp for
+			for (int j = 0; j < n - 1; j += 2)
+			{
+				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
+			}
+		}
+		else {
+#pragma omp for
+			for (int j = 1; j < n - 1; j += 2)
+			{
+				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
+			}
+
+		}
+	}
+}
+vector<int>gener(int n) {
+	vector<int> arr(n);
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int>
+		dist(1, 1000);
+	for (int i = 0; i < n; i++) {
+		arr[i] = dist(gen);
+	}
+	return arr;
+}
+vector<vector<int>>copy(const vector<vector<int>>& original) {
+	vector<vector<int>>copy;
+	for (const auto& innerArray : original) {
+		copy.push_back(innerArray);
+	}
+	return copy;
+}
 int main()
 {
-	setlocale(0, "");
-	int i, j, k;
-	const int n = 100;
-	double a[n][n], b[n][n], c[n][n];
-	for (i = 0; i < n; i++)
-
-		for (j = 0; j < n; j++)
-		{
-			a[i][j] = i;
-			b[i][j] = i;
-			c[i][j] = 0;
-		}
-	auto t0 = high_resolution_clock::now();
-	for (i = 0; i < n; i++)
-	{
-		for (j = 0; j < n; j++)
-		{
-			
-			for (k = 0; k < n; k++)
-			{
-				c[i][j] += a[i][k] * b[k][j];
-			}
-		}
-		
+	vector<vector<int>>a;
+	vector<int> n = { 10,20,30,40,50,60,70,80,90,100 };
+	for (int n : n) {
+		vector<int>randomArray = gener(n);
+		a.push_back(randomArray);
 	}
-	auto t1 = high_resolution_clock::now();
-	cout << duration_cast<microseconds>(t1 - t0).count() << endl;
-	for (i = 0; i < n; i++)
-
-		for (j = 0; j < n; j++)
-		{
-			a[i][j] = i;
-			b[i][j] = i;
-			c[i][j] = 0;
-		}
-	auto t2 = high_resolution_clock::now();
-#pragma omp parallel shared(a,b,c)private(i,j,k)
-	{
-#pragma omp for
-		
-			for (i = 0; i < n; i++)
-			{
-				for (j = 0; j < n; j++)
-				{
-					
-					for (k = 0; k < n; k++)
-					{
-						c[i][j] += a[i][k] * b[k][j];
-					}
-				}
-				
-			}
-
-		}
-	
-	auto t3 = high_resolution_clock::now();
-	cout << duration_cast<microseconds>(t3 - t2).count() << endl;
-
+	vector<vector<int>> acopy = copy(a);
+	for (int i = 0; i < 10; i++) {
+		Bubl1(a[i], n[i]);
+	}
+		auto t0 = high_resolution_clock::now();
 }
+
