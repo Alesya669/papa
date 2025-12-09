@@ -1,84 +1,65 @@
 ﻿
+#define _SILENCE_AMP_DEPRECATION_WARNINGS
 #include <iostream>
-#include <chrono>
-#include <vector>
-#include <random>
-#include <algorithm>
-using namespace chrono;
+#include <amp.h>
+#include<ppl.h>
+#include<concurrent_vector.h>
+#include<array>
+#include<vector>
+#include<tuple>
+#include<algorithm>
+#include<chrono>
+
 using namespace std;
+using namespace std::chrono;
+using namespace concurrency;
 
-void Bubl1(int Mass[], int n)
-{
-	int i, j;
-	for (int i = 0; i < n; i++) {
-		if (i % 2 == 0) {
-			for (int j = 0; j < n - 1; j += 2)
-			{
-				if (Mass[j] > Mass[i + 1])swap(Mass[j], Mass[i + 1]);
-			}
-		}
-		else {
-			for (int j = 1; j < n - 1; j += 2)
-			{
-				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
-			}
 
-		}
-	}
+int fib(int n) {
+	if (n < 2)
+		return n;
+	return fib(n - 1) + fib(n - 2);
 }
+/*const int size = 5;
 
-void Bubl2(int Mass[], int n) {
-	int i, j;
-#pragma omp parallel default(none) shared(Mass,n) private(i)
-
-	for (int i = 0; i < n; i++) {
-		if (i % 2 == 0) {
-#pragma omp for
-			for (int j = 0; j < n - 1; j += 2)
-			{
-				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
-			}
-		}
-		else {
-#pragma omp for
-			for (int j = 1; j < n - 1; j += 2)
-			{
-				if (Mass[j] > Mass[j + 1])swap(Mass[j], Mass[j + 1]);
-			}
-
-		}
+void CppAmpMethod() {
+	const int size = 5;
+	int aCPP[] = { 1,2,3,4,5 };
+	int bCPP[] = {6,7,8,9,10};
+	int sumCPP[size];
+	array_view<const int, 1> a(size, aCPP);
+	array_view<const int, 1> b(size, bCPP);
+	array_view<int, 1> sum(size, sumCPP);
+	sum.discard_data();
+	parallel_for_each(
+		sum.extent, [=](index<1> idx) restrict(amp)
+		{
+			sum[idx] = a[idx] + b[idx]; }
+		
+	);
+	for (int i = 0; i < size; i++) {
+		cout << sum[i] << "\n";
 	}
-}
-vector<int>gener(int n) {
-	vector<int> arr(n);
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int>
-		dist(1, 1000);
-	for (int i = 0; i < n; i++) {
-		arr[i] = dist(gen);
-	}
-	return arr;
-}
-vector<vector<int>>copy(const vector<vector<int>>& original) {
-	vector<vector<int>>copy;
-	for (const auto& innerArray : original) {
-		copy.push_back(innerArray);
-	}
-	return copy;
-}
+}*/
 int main()
 {
-	vector<vector<int>>a;
-	vector<int> n = { 10,20,30,40,50,60,70,80,90,100 };
-	for (int n : n) {
-		vector<int>randomArray = gener(n);
-		a.push_back(randomArray);
-	}
-	vector<vector<int>> acopy = copy(a);
-	for (int i = 0; i < 10; i++) {
-		Bubl1(a[i], n[i]);
-	}
-		auto t0 = high_resolution_clock::now();
-}
+	/*vector<accelerator> accelerators = accelerator::get_all();
+	cout << accelerators.size() << "\n";
+	for (size_t i = 0; i < accelerators.size(); i++)
+		wcout << accelerator(accelerator::default_accelerator).description << endl;
+	wcout << accelerators[0].get_dedicated_memory() << "\n";
+	wcout << accelerators[0].get_device_path() << "\n";
+	wcout << accelerators[0].get_supports_double_precision() << "\n";*/
 
+	array <int, 6> a = { 16,17,18,19,30,31 };
+	vector<tuple<int, int>> result1;
+	concurrent_vector<tuple<int,int>> results2
+	setlocale(LC_ALL, "rus");
+	auto t0 = high_resolution_clock::now();
+	for_each(begin(a), end(a), [&](int n)
+		{
+		result1.push_back(make_tuple(n, fib(n)));
+		});
+	auto t1 = high_resolution_clock::now();
+
+}
