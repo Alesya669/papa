@@ -1,0 +1,25 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <chrono>
+using namespace std;
+int main()
+{
+    ifstream fif("Z:\\vis\\ConsoleApplication2\\rrr.txt");
+    int k = _getch();
+    while (k != 27)
+    {
+        streamsize s1 = fif.tellg();
+        streamsize s2 = fif.tellg();
+        while (s1 == s2) {
+            s1 = s2;
+            s2 = fif.tellg();
+        }
+        cout << "new";
+        k = _getch();
+    }
+
+}
+
