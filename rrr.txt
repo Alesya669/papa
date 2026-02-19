@@ -1,25 +1,54 @@
-
-
+#include <thread>
+#include <chrono>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <conio.h>
-#include <chrono>
 using namespace std;
+using namespace std::chrono;
+using namespace std::this_thread;
 int main()
 {
-    ifstream fif("Z:\\vis\\ConsoleApplication2\\rrr.txt");
-    int k = _getch();
-    while (k != 27)
-    {
-        streamsize s1 = fif.tellg();
-        streamsize s2 = fif.tellg();
-        while (s1 == s2) {
-            s1 = s2;
-            s2 = fif.tellg();
-        }
-        cout << "new";
-        k = _getch();
-    }
+	setlocale(LC_ALL, "Russian");
 
+	int interval = 1;
+
+	ifstream file("C:\\Users\\ruden\\OneDrive\\Рабочий стол\\fil.txt", ios::binary | ios::ate);
+	if (!file)
+	{
+		cout << "файл не найден" << endl;
+	}
+	double size1 = file.tellg();
+	file.close();
+
+	while (true)
+	{
+		if (_kbhit())  
+		{
+			int p = _getch();
+			if (p == 13)  
+			{
+				
+				break; 
+			}
+		} 
+		sleep_for(seconds(interval));
+		ifstream file("C:\\Users\\ruden\\OneDrive\\Рабочий стол\\fil.txt", ios::binary | ios::ate);
+
+		if (!file)
+		{
+			cout << "файл пропал" << endl;
+			break;
+
+		}
+		double size2 = file.tellg();
+		file.close();
+		if (size2 != size1)
+		{
+			cout << " файл изменен" << endl;
+			size1 = size2;
+		}
+		
+	}
+	
 }
-
