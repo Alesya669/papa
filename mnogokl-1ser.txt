@@ -1,0 +1,124 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <thread>
+#include <chrono>
+#include <conio.h>
+#include <sstream>
+#include <iomanip>
+#include <windows.h>  // Для GetFileAttributes
+
+using namespace std;
+using namespace std::chrono;
+using namespace std::this_thread;
+
+// Функция проверки существования файла (WinAPI)
+bool fileExists(const string& filename) {
+    DWORD attrib = GetFileAttributesA(filename.c_str());
+    return (attrib != INVALID_FILE_ATTRIBUTES && !(attrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+
+    const string F1 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\server.txt";
+    const string F2 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\klient.txt";
+
+    int check_interval = 2;
+
+    cout << "========================================" << endl;
+    cout << "МУЛЬТИ-КЛИЕНТ ЗАПУЩЕН" << endl;
+    cout << "========================================" << endl;
+
+    // Вводим ник клиента
+    string nickname;
+    cout << "Введите ваш НИК: ";
+    cin >> nickname;
+
+    // Файл ответов для этого клиента
+    string my_response_file = F2 + nickname + ".txt";
+
+    // Вводим данные пациента
+    string surname;
+    double height, weight;
+
+    cout << "\nВведите фамилию пациента: ";
+    cin >> surname;
+    cout << "Введите рост (см): ";
+    cin >> height;
+    cout << "Введите вес (кг): ";
+    cin >> weight;
+
+    // Формируем запрос с ником (формат: "ник:фамилия рост вес")
+    ostringstream request_stream;
+    request_stream << nickname << ":" << surname << " " << height << " " << weight;
+    string request = request_stream.str();
+
+    // Отправляем запрос
+    ofstream req_file(F1, ios::app);
+    if (!req_file) {
+        cout << "Ошибка открытия файла запросов!" << endl;
+        return 1;
+    }
+
+    req_file << request << endl;
+    req_file.close();
+
+    cout << "\n[КЛИЕНТ " << nickname << "] Запрос отправлен: " << request << endl;
+   
+   
+
+    // Запоминаем текущий размер файла ответов
+    streampos prev_resp_size = 0;
+
+    // Используем fileExists вместо fs::exists
+    if (fileExists(my_response_file)) {
+        ifstream resp_file(my_response_file, ios::ate | ios::binary);
+        prev_resp_size = resp_file.tellg();
+        resp_file.close();
+    }
+
+    bool response_received = false;
+
+    while (!response_received) {
+        if (_kbhit() && _getch() == 13) {
+            break;
+        }
+
+        sleep_for(seconds(check_interval));
+
+        // Проверяем, появился ли ответ в файле клиента
+        if (fileExists(my_response_file)) {
+            ifstream resp_file(my_response_file, ios::ate | ios::binary);
+            streampos curr_resp_size = resp_file.tellg();
+            resp_file.close();
+
+            if (curr_resp_size > prev_resp_size) {
+                // Читаем последний ответ
+                ifstream read_resp(my_response_file);
+                string line;
+                string last_response;
+
+                while (getline(read_resp, line)) {
+                    if (!line.empty()) {
+                        last_response = line;
+                    }
+                }
+
+                if (!last_response.empty()) {
+                    cout << "\n=== ПОЛУЧЕН ОТВЕТ ДЛЯ КЛИЕНТА '" << nickname << "' ===" << endl;
+                    cout << last_response << endl;
+                    cout << "==========================================\n" << endl;
+                }
+
+                response_received = true;
+                read_resp.close();
+            }
+        }
+    }
+
+    cout << "[КЛИЕНТ " << nickname << "] Завершил работу." << endl;
+    return 0;
+}

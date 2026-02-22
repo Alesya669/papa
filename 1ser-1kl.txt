@@ -1,0 +1,132 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <thread>
+#include <chrono>
+#include <conio.h>
+#include <sstream>
+#include <iomanip>
+#include <windows.h> 
+
+using namespace std;
+using namespace std::chrono;
+using namespace std::this_thread;
+
+string processRequest(const string& request) {
+    istringstream iss(request);
+    string surname;
+    double height, weight;
+
+    if (!(iss >> surname >> height >> weight)) {
+        return "Ошибка формата запроса";
+    }
+
+    // Вычисляем normy с округлением до 2 знаков
+    double norma = weight / ((height / 100) * (height / 100));
+
+    string result;
+    if (norma < 18.5) {
+        result = "Недостаточный вес";
+    }
+    else if (norma < 25) {
+        result = "Нормальный вес";
+    }
+    else {
+        result = "Избыточный вес";
+    }
+
+    // Форматируем ответ красиво
+    ostringstream response_stream;
+    response_stream << surname << ": " << result;
+
+    return response_stream.str();
+}
+
+int main() {
+   
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    setlocale(LC_ALL, "Russian");
+
+    const string F1 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\server.txt";
+    const string F2 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\klient.txt"; 
+    int check_interval = 2;
+
+    cout << "СЕРВЕР ЗАПУЩЕН " << endl;
+    cout << "Файл запросов: " << F1 << endl;
+    cout << "Файл ответов: " << F2 << endl;
+    cout << "Интервал проверки: " << check_interval << " сек" << endl;
+    cout << "Нажмите ENTER для остановки..." << endl << endl;
+
+    streampos prev_size = 0;
+
+    // Создаем файлы если их нет
+    ifstream check_file(F1);
+    if (!check_file) {
+        ofstream create(F1);
+        create.close();
+    }
+    check_file.close();
+
+    ifstream check_resp(F2);
+    if (!check_resp) {
+        ofstream create(F2);
+        create.close();
+    }
+    check_resp.close();
+
+    // Получаем начальный размер
+    ifstream size_file(F1, ios::ate | ios::binary);
+    prev_size = size_file.tellg();
+    size_file.close();
+
+    while (true) {
+        if (_kbhit() && _getch() == 13) {
+            break;
+        }
+
+        sleep_for(seconds(check_interval));
+
+        ifstream curr_file(F1, ios::ate | ios::binary);
+        if (!curr_file) continue;
+
+        streampos curr_size = curr_file.tellg();
+        curr_file.close();
+
+        if (curr_size > prev_size) {
+            cout << "\n Обнаружены новые запросы!" << endl;
+
+            ifstream read_file(F1);
+            read_file.seekg(prev_size);
+
+            string line;
+            int request_count = 0;
+
+            while (getline(read_file, line)) {
+                if (!line.empty()) {
+                    request_count++;
+                    cout << " Запрос #" << request_count << ": " << line << endl;
+
+                    string response = processRequest(line);
+                    cout << " Ответ: " << response << endl;
+
+                    ofstream write_file(F2, ios::app);
+                    write_file << response << endl;
+                    write_file.close();
+                }
+            }
+
+            if (request_count > 0) {
+                cout << " Обработано запросов: " << request_count << endl;
+            }
+
+            read_file.close();
+            prev_size = curr_size;
+            request_count++;
+        }
+    }
+
+    cout << "\nСервер остановлен." << endl;
+    return 0;
+}

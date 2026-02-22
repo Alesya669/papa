@@ -1,0 +1,109 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <thread>
+#include <chrono>
+#include <conio.h>
+#include <sstream>
+#include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
+
+using namespace std;
+using namespace std::chrono;
+using namespace std::this_thread;
+
+int main() {
+    // Устанавливаем кодировку для консоли Windows
+    SetConsoleCP(1251);        // для ввода
+    SetConsoleOutputCP(1251);  // для вывода
+
+    setlocale(LC_ALL, "Russian");
+
+    const string F1 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\server.txt";
+    const string F2 = "C:\\Users\\ruden\\OneDrive\\Рабочий стол\\klient.txt"; 
+    int check_interval = 2;
+
+    cout << "КЛИЕНТ ЗАПУЩЕН " << endl;
+    cout << "--------------------------------" << endl;
+
+    string surname;
+    double height, weight;
+
+    cout << "Введите фамилию: ";
+    cin >> surname;
+    cout << "Введите рост (см): ";
+    cin >> height;
+    cout << "Введите вес (кг): ";
+    cin >> weight;
+
+    
+    ostringstream request_stream;
+    request_stream << surname << " " << height << " " << weight;
+    string request = request_stream.str();
+
+    ofstream req_file(F1, ios::app);
+    if (!req_file) {
+        cout << "Ошибка открытия файла запросов!" << endl;
+        cout << "Путь: " << F1 << endl;
+        return 1;
+    }
+
+    req_file << request << endl;
+    req_file.close();
+
+    cout << "\nЗапрос отправлен: " << request << endl;
+    cout << "Ожидание ответа..." << endl;
+    cout << "Нажмите ENTER для выхода..." << endl;
+
+    // Запоминаем текущий размер файла ответов
+    ifstream resp_file(F2, ios::ate | ios::binary);
+    streampos prev_resp_size = 0;
+
+    if (resp_file) {
+        prev_resp_size = resp_file.tellg();
+        resp_file.close();
+    }
+
+    bool response_received = false;
+
+    while (!response_received) {
+        if (_kbhit() && _getch() == 13) {
+            break;
+        }
+
+        sleep_for(seconds(check_interval));
+
+        ifstream resp_file(F2, ios::ate | ios::binary);
+        if (resp_file) {
+            streampos curr_resp_size = resp_file.tellg();
+
+            if (curr_resp_size > prev_resp_size) {
+                resp_file.close();
+
+                ifstream read_resp(F2);
+                string line;
+                string last_response;
+
+                while (getline(read_resp, line)) {
+                    if (!line.empty()) {
+                        last_response = line;
+                    }
+                }
+
+                if (!last_response.empty()) {
+                    cout << "\n=== ПОЛУЧЕН ОТВЕТ ===" << endl;
+                    cout << last_response << endl;
+                    cout << "=====================\n" << endl;
+                }
+
+                response_received = true;
+                read_resp.close();
+            }
+            else {
+                resp_file.close();
+            }
+        }
+    }
+
+    cout << "Клиент завершил работу." << endl;
+    return 0;
+}
