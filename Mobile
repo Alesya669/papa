@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android layout_width="match_parent" android: layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp"
+android:background="#F5F5F5">
+<!-- Поле ввода текущего числа -->
+<Editlext
+android:id="@+id/EditTextCur"
+android layout_width="match_parent" android layout_height="wrap_content" android inputType="numberDecimal"
+android:textSize="36sp" android padding="16dp"
+android:background="#FFFFFF"
+
+android:columnCount="4"
+android rowCount="4"
+android:layout_marginTop="16dp">
+<!-- Ряд 1: 789 /-->
+< Button android:id="@+id/button7" android:text="7"
+style="@style/CalcButton" >
+< Button android:id="@+id/button8" android:text="8"
+style="@style/CalcButton" >
+‹Button android:id="@tid/button9" android:text="9"
+style="@style/Calc Button" >
+< Button android:id="@+id/buttonDiv" android:text="/"
+style="@style/Calc ButtonOp" />
+<!-- Ряд 2: 4 5 6 * -->
+< Button android:id="@+id/button4" android:text="4"
+style="@style/Calc Button" »
+< Button android:id="@+id/button5" android:text="5"
+style="@style/CalcButton" >
+‹Button android:id="@+id/button6" android:text="6"
+style="@style/CalcButton" >
+«Button android:id="@+id/buttonMult" android:text="*"
+style="@style/CalcuttonOp" |>
+<!-- Ряд 3: 1 23 - -->
+<Button android:id="@tid/button1" android:text="1"
+style="@style/CalcButton" /
+< Button android:id="@+id/button2" android:text="2"
+style="@style/CalcButton" >
+< Button android:id="@+id/button3" android:text-"3"
+style="@style/CalcButton" />
+
+val digitButtons = listOf(
+R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7,
+R.id.button8, R.id.button9
+)
+for (id in digitButtons) {
+findViewByld<Button>(id).setOnClickListener {
+val digit = (it as Button). text.to String0
+curNum.append (digit)
+}
+}
+// ===== Обработка точки ===
+=
+val btnDot: Button = find View Byld(R.id.buttonDot)
+btnDot.setOnClickListener {
+if (curNum.text.isEmpty0)) {
+curNum.append("0.")
+; else {
+curNum.append(".")
+}
+}
+}}
+
+android gravity="end"
+android hint="0" />
+<!-- Поле для отображения предыдущего числа -->
+<Text View
+android:id="@+id/textViewNum"
+android layout_width="match_parent" android:layout_height="wrap_content"
+android:textSize="24sp" android padding="8dp"
+android:background="#E0E0E0"
+android:text="'"/>
+<!-- Поле для отображения операции -->
+<TextView
+android:id="@+id/textViewSign" android:layout_width="match_parent" android:layout_height-"wrap_content"
+android:textSize="24sp" android padding="8dp"
+android: background="#EE00"
+android text="'"/>
+<!-- Сетка кнопок 4x4 -->
+<GridLayout
+android:layout_width="match_parent" android:layout_height-"wrap_content"
+
+xmI
+‹?xml version="1.0" encoding="utf-8"?>
+resources>
+<!-- Стиль для цифровых кнопок -->
+<style name="CalcButton">
+‹item name="android:layout_width"> 0dp</item>
+< item name="android:layout_height"> wrap_content</item> < item name="android:layout_column Weight">|</item>
+< item name="android:textSize"> 28sp</item> < item name="android:padding"> 16dp</item>
+<item name="android:background">#FFFFFF</item>
+<item name="android:textColor'>#000000</item>
+</style>
+<!-- Стиль для кнопок операций -->
+<style name="CalcButtonOp">
+<item name="android:layout_width">Odp</item>
+< item name="android:layout_height"> wrap_content</item> <item name="android:layout_columnWeight">|</item>
+<item name="android:textSize">28sp</item>
+<item name="android:padding">16dp</item>
+< item name="android:background">#FF9800</item>
+<item name="android textColor">#FFFFFF</item>
+</style>
+<!-- Стиль для кнопки очистки -->
+<style name="CalcButtonClear">
+
+< item name="android:layout_ width">Odp</item>
+<item name="android layout_height">wrap_content</item>
+< item name-"android:layout_column Weight">|</item>
+<item name="android:textSize">28sp</item>
+< item name="android:padding"> 16dp</item>
+< item name="android:background">#FF5722</item>
+<item name="android textColor">#FFFFFF</item>
+</style>
+</resources>
+</details>
+
+Шаг 3. Код для ввода цифр и точки (файл MainActivity.kt)
+package com.example.prl
+_calculator
+import android.os. Bundle import android. widget. Button import android. widget. EditText
+import android.appcompat.app.AppCompatActivity
+class MainActivity: AppCompatActivity /
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+setContentView(R.layout.activity_main)
+val curNum = find ViewByld<EditText> (R.id. EditTextCur)
+// ===== Обработка цифр (0-9) =====
+
+<Button android:id="@+id/buttonMinus" android:text="_"
+style="@style/CalcButtonOp" />
+<!-- Ряд 4: СО. + -->
+<Button android:id="@+id/button" android:text="C"
+style="@style/Calc ButtonClear" »
+< Button android:id="@+id/button0" android:text="0"
+style="@style/Calc Button" /
+‹Button android:id="@+id/buttonDot" android:text="."
+style="@style/CalcButton" »
+<Button android:id="@+id/buttonPlus" android:text="+"
+style="@style/CalcButtonOp" /
+</GridLayout>
+<!-- Кнопка "=" -->
+<Button
+android:id="@+id/buttonEquals"
+android:layout_width="match_parent" android:layout_height="wrap_content"
+android:text="="
+android:textSize="32sp"
+android:background="#4CAF50" android textColor="#FFFFFF"
+android:layout_marginTop="16dp" />
+</Linear Layout>
+</details><details> <summary><b>Код styles.xml (создать в папке
+res/values)</b></summary>
