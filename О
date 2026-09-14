@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <!-- Поле ввода текущего числа -->
+    <EditText
+        android:id="@+id/EditTextCur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:textSize="36sp"
+        android:padding="16dp"
+        android:gravity="end"
+        android:hint="0"
+        android:background="#FFFFFF" />
+
+    <!-- Предыдущее число -->
+    <TextView
+        android:id="@+id/textViewNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:background="#E0E0E0"
+        android:text="" />
+
+    <!-- Знак операции -->
+    <TextView
+        android:id="@+id/textViewSign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:background="#EEEEEE"
+        android:text="" />
+
+    <!-- Сетка кнопок 4x4 -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="4"
+        android:layout_marginTop="16dp">
+
+        <!-- Ряд 1: 7 8 9 / -->
+        <Button
+            android:id="@+id/button7"
+            android:text="7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button8"
+            android:text="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button9"
+            android:text="9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/buttonDiv"
+            android:text="/"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FF9800"
+            android:textColor="#FFFFFF" />
+
+        <!-- Ряд 2: 4 5 6 * -->
+        <Button
+            android:id="@+id/button4"
+            android:text="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button5"
+            android:text="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button6"
+            android:text="6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/buttonMult"
+            android:text="*"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FF9800"
+            android:textColor="#FFFFFF" />
+
+        <!-- Ряд 3: 1 2 3 - -->
+        <Button
+            android:id="@+id/button1"
+            android:text="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button2"
+            android:text="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/button3"
+            android:text="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/buttonMinus"
+            android:text="-"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FF9800"
+            android:textColor="#FFFFFF" />
+
+        <!-- Ряд 4: C 0 . + -->
+        <Button
+            android:id="@+id/buttonC"
+            android:text="C"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FF5722"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/button0"
+            android:text="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/buttonDot"
+            android:text="."
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/buttonPlus"
+            android:text="+"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:background="#FF9800"
+            android:textColor="#FFFFFF" />
+    </GridLayout>
+
+    <!-- Кнопка "=" -->
+    <Button
+        android:id="@+id/buttonEquals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="="
+        android:textSize="32sp"
+        android:background="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
