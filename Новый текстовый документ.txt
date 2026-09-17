@@ -1,0 +1,97 @@
+/*#include <iostream>
+#include <cmath>
+using namespace std;
+
+
+double f(double x) {
+    return x * x + 2 ;    
+}
+
+
+double df(double x) {
+    return 2 * x ;            // f'(x) 
+}
+
+double ddf(double x) {
+    return 2;                    // f''(x) 
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+
+    double a = -3, b = 7;        // отрезок 
+    double x_1 = 0;          // критическая точка из f'(x) = 0
+
+    // Проверка попадания в отрезок
+    if (x_1 < a || x_1 > b) {
+        cout << "x* = " << x_1 << " вне отрезка \n";
+        cout << "Экстремум ищем на концах отрезка:\n";
+        double fa = f(a), fb = f(b);
+        if (fa < fb)
+            cout << "Минимум на левом конце: x = " << a << ", f = " << fa << "\n";
+        else
+            cout << "Минимум на правом конце: x = " << b << ", f = " << fb << "\n";
+     
+    }
+
+    // Определяем тип экстремума по второй производной
+    double second = ddf(x_1);
+    double value = f(x_1);
+
+    cout << "Критическая точка: x* = " << x_1 << "\n";
+    cout << "f(x*) = " << value << "\n";
+
+    if (second > 0)
+        cout << " МИНИМУМ\n";
+    else if (second < 0)
+        cout << " МАКСИМУМ\n";
+   
+}*/
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// ===== ФУНКЦИЯ =====
+double f(double x) {
+    return x * x + 2;
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    double x0 = 0;      // начальная точка
+    double t = 1;      // начальный шаг
+
+    double f0 = f(x0);
+    double fl = f(x0 - t);
+    double fr = f(x0 + t);
+
+    // Проверка условия (а): минимум внутри [x0-t, x0+t]
+    if (fl >= f0 && f0 <= fr) {
+        cout << "Интервал: [" << x0 - t << ", " << x0 + t << "]\n";
+        return 0;
+    }
+
+    // Направление движения
+    double d = t;
+    if (fl < f0) d = -t;
+
+    // Итерации
+    double xp = x0, fp = f0;
+    double xc = x0 + d, fc = f(xc);
+
+    while (fc < fp) {
+        d *= 2;
+        double xn = xc + d;
+        double fn = f(xn);
+        if (fn >= fc) {
+            cout << "Интервал: [" << min(xp, xn) << ", " << max(xp, xn) << "]\n";
+            return 0;
+        }
+        xp = xc; fp = fc;
+        xc = xn; fc = fn;
+    }
+
+    cout << "Интервал: [" << min(x0, xc) << ", " << max(x0, xc) << "]\n";
+   
+}
