@@ -1,0 +1,322 @@
+Отлично, рад что всё заработало! Держи полный комплект всех файлов, которые у тебя сейчас используются. Можешь сохранить это сообщение как шпаргалку.
+
+---
+
+1. res/layout/activity_main.xml
+
+(Внешний вид: поля ввода, сетка кнопок с розовыми и зелёными цветами)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <!-- Поле ввода текущего числа -->
+    <EditText
+        android:id="@+id/EditTextCur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:textSize="36sp"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:gravity="end"
+        android:hint="0" />
+
+    <!-- Поле для отображения предыдущего числа -->
+    <TextView
+        android:id="@+id/textViewNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:background="#E0E0E0"
+        android:text="" />
+
+    <!-- Поле для отображения операции -->
+    <TextView
+        android:id="@+id/textViewSign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:background="#E0E0E0"
+        android:text="" />
+
+    <!-- Сетка кнопок 4x4 -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="4"
+        android:layout_marginTop="16dp">
+
+        <!-- Ряд 1: 7 8 9 / -->
+        <Button android:id="@+id/button7" android:text="7" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button8" android:text="8" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button9" android:text="9" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/buttonDiv" android:text="/" style="@style/CalcButtonOp" android:background="#C8E6C9" />
+
+        <!-- Ряд 2: 4 5 6 * -->
+        <Button android:id="@+id/button4" android:text="4" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button5" android:text="5" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button6" android:text="6" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/buttonMult" android:text="*" style="@style/CalcButtonOp" android:background="#C8E6C9" />
+
+        <!-- Ряд 3: 1 2 3 - -->
+        <Button android:id="@+id/button1" android:text="1" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button2" android:text="2" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/button3" android:text="3" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/buttonMinus" android:text="-" style="@style/CalcButtonOp" android:background="#C8E6C9" />
+
+        <!-- Ряд 4: C 0 . + -->
+        <Button android:id="@+id/buttonC" android:text="C" style="@style/CalcButtonClear" android:background="#F06292" />
+        <Button android:id="@+id/button0" android:text="0" style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/buttonDot" android:text="." style="@style/CalcButton" android:background="#F8BBD0" />
+        <Button android:id="@+id/buttonPlus" android:text="+" style="@style/CalcButtonOp" android:background="#C8E6C9" />
+
+    </GridLayout>
+
+    <!-- Кнопка "=" -->
+    <Button
+        android:id="@+id/buttonEquals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="="
+        android:textSize="32sp"
+        android:background="#81C784"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
+```
+
+---
+
+2. res/values/themes.xml
+
+(Тема приложения + стили для кнопок)
+
+```xml
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Базовая тема приложения -->
+    <style name="Theme.Pr1_calculator" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+    </style>
+
+    <!-- Стиль для цифровых кнопок -->
+    <style name="CalcButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <!-- Стиль для кнопок операций -->
+    <style name="CalcButtonOp">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <!-- Стиль для кнопки очистки -->
+    <style name="CalcButtonClear">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>
+```
+
+---
+
+3. res/values/colors.xml
+
+(Цвета, которые использует тема)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
+```
+
+---
+
+4. java/com/example/pr1_calculator/MainActivity.kt
+
+(Логика работы калькулятора)
+
+```kotlin
+package com.example.pr1_calculator
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var curNum: EditText
+    private lateinit var textViewNum: TextView
+    private lateinit var textViewSign: TextView
+
+    // Переменные для хранения первого числа и знака операции
+    private var firstNumber: Double = 0.0
+    private var currentOperation: String = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        curNum = findViewById(R.id.EditTextCur)
+        textViewNum = findViewById(R.id.textViewNum)
+        textViewSign = findViewById(R.id.textViewSign)
+
+        // ===== Обработка цифр (0-9) =====
+        val digitButtons = listOf(
+            R.id.button0, R.id.button1, R.id.button2, R.id.button3,
+            R.id.button4, R.id.button5, R.id.button6, R.id.button7,
+            R.id.button8, R.id.button9
+        )
+
+        for (id in digitButtons) {
+            findViewById<Button>(id).setOnClickListener {
+                val digit = (it as Button).text.toString()
+                curNum.append(digit)
+            }
+        }
+
+        // ===== Обработка точки =====
+        val btnDot: Button = findViewById(R.id.buttonDot)
+        btnDot.setOnClickListener {
+            if (curNum.text.isEmpty()) {
+                curNum.append("0.")
+            } else if (!curNum.text.contains(".")) {
+                curNum.append(".")
+            }
+        }
+
+        // ===== Обработка кнопки "C" (Очистка) =====
+        val btnC: Button = findViewById(R.id.buttonC)
+        btnC.setOnClickListener {
+            curNum.text.clear()
+            textViewNum.text = ""
+            textViewSign.text = ""
+            firstNumber = 0.0
+            currentOperation = ""
+        }
+
+        // ===== Обработка кнопок операций (+, -, *, /) =====
+        val opButtons = mapOf(
+            R.id.buttonPlus to "+",
+            R.id.buttonMinus to "-",
+            R.id.buttonMult to "*",
+            R.id.buttonDiv to "/"
+        )
+
+        for ((id, op) in opButtons) {
+            findViewById<Button>(id).setOnClickListener {
+                if (curNum.text.isNotEmpty()) {
+                    firstNumber = curNum.text.toString().toDouble()
+                    currentOperation = op
+                    textViewNum.text = firstNumber.toString()
+                    textViewSign.text = op
+                    curNum.text.clear()
+                }
+            }
+        }
+
+        // ===== Обработка кнопки "=" =====
+        val btnEquals: Button = findViewById(R.id.buttonEquals)
+        btnEquals.setOnClickListener {
+            if (curNum.text.isNotEmpty() && currentOperation.isNotEmpty()) {
+                val secondNumber = curNum.text.toString().toDouble()
+                var result = 0.0
+
+                when (currentOperation) {
+                    "+" -> result = firstNumber + secondNumber
+                    "-" -> result = firstNumber - secondNumber
+                    "*" -> result = firstNumber * secondNumber
+                    "/" -> {
+                        if (secondNumber == 0.0) {
+                            curNum.setText("Ошибка")
+                            return@setOnClickListener
+                        } else {
+                            result = firstNumber / secondNumber
+                        }
+                    }
+                }
+
+                // Выводим результат
+                curNum.setText(result.toString())
+                textViewNum.text = ""
+                textViewSign.text = ""
+                currentOperation = ""
+            }
+        }
+    }
+}
+```
+
+---
+
+5. manifests/AndroidManifest.xml
+
+(Главный файл манифеста — здесь важно, чтобы тема называлась Theme.Pr1_calculator с большой P)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Pr1_calculator">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+```
+
+---
+
+Всё, это полный комплект. Можешь смело закрывать Android Studio, проект сохранён в D:\PR1_Calculator. Если захочешь вернуться — просто открой эту папку заново. Удачи с лабораторной! 🚀
