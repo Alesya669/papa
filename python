@@ -156,3 +156,32 @@ for i in range(len(l)-dl):
     if s>max:
         max=s
 print(max)
+
+
+ИНДИВИДУАЛКИИИИИИ
+
+s = "for i:=99921 downto 20"
+
+
+num = [c for c in s.split('0')[0] if c.isdigit()]
+
+num.sort()
+
+left = []
+mid = ""
+
+i = 0
+while i < len(num):
+    
+    if i + 1 < len(num) and num[i] == num[i+1]:
+        left.append(num[i])
+        i += 2
+    else:
+        
+        if mid == "":
+            mid = num[i]
+        i += 1
+
+result = "".join(left) + mid + "".join(left[::-1])
+
+print(result)
