@@ -185,3 +185,27 @@ while i < len(num):
 result = "".join(left) + mid + "".join(left[::-1])
 
 print(result)
+
+
+инд2
+n = int(input())
+guests = {}
+
+for _ in range(n):
+    g, d, c = input().split()
+    guests.setdefault(g, {})
+    guests[g][d] = guests[g].get(d, 0) + int(c)
+
+for g in sorted(guests):
+    print(g + ":")
+    for d in sorted(guests[g]):
+        print(d, ":", guests[g][d])
+
+
+
+
+4
+Иван Суп 2
+Мария Салат 1
+Иван Суп 1
+Мария Суп 3
