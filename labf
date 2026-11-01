@@ -1,0 +1,21 @@
+with open('input.txt', 'r', encoding='utf-8') as f:
+    n = int(f.readline())
+    s = f.readline().strip()
+
+# словарь: значение префиксной суммы -> сколько раз встретилось
+count = {0: 1}   # пустой префикс (сумма 0) встретился 1 раз
+
+balance = 0
+for ch in s:
+    if ch == 'a':
+        balance += 1
+    else:  # 'b'
+        balance -= 1
+    count[balance] = count.get(balance, 0) + 1
+
+# считаем количество пар
+answer = 0
+for k in count.values():
+    answer += k * (k - 1) // 2
+
+print(answer)
