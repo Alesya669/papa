@@ -1,0 +1,49 @@
+double lineSearch(double x1, double x2, double d1, double d2) {
+    // --- поиск отрезка [a,b], где есть минимум ---
+    double a = 0.0, b = 1.0;
+    double fa = f(x1 + a*d1, x2 + a*d2);
+    double fb = f(x1 + b*d1, x2 + b*d2);
+
+    // если b не лучше a — идём в другую сторону
+    if (fb > fa) {
+        b = -1.0;
+        fb = f(x1 + b*d1, x2 + b*d2);
+    }
+
+    // расширяем, пока значение убывает
+    int guard = 0;
+    while (fb < fa && guard < 100) {
+        a = b;
+        fa = fb;
+        b *= 2.0;
+        fb = f(x1 + b*d1, x2 + b*d2);
+        ++guard;
+    }
+    
+    if (a > b) swap(a, b);
+
+    // --- золотое сечение ---
+    const double phi  = (1.0 + sqrt(5.0)) / 2.0;
+    const double rphi = 2.0 - phi;
+
+    double t1 = a + rphi*(b - a);
+    double t2 = b - rphi*(b - a);
+    double f1 = f(x1 + t1*d1, x2 + t1*d2);
+    double f2 = f(x1 + t2*d1, x2 + t2*d2);
+
+    for (int i = 0; i < 200; ++i) {
+        if (f1 < f2) {
+            b = t2; t2 = t1; f2 = f1;
+            t1 = a + rphi*(b - a);
+            f1 = f(x1 + t1*d1, x2 + t1*d2);
+        } else {
+            a = t1; t1 = t2; f1 = f2;
+            t2 = b - rphi*(b - a);
+            f2 = f(x1 + t2*d1, x2 + t2*d2);
+        }
+    }
+    return 0.5*(a + b);
+}
+
+        // Шаг 11 — только одномерный поиск, никакой матрицы Q
+        double t = lineSearch(x1, x2, d1, d2);
